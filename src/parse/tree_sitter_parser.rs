@@ -88,6 +88,7 @@ type TreeSitterNodeName = &'static str;
 extern "C" {
     fn tree_sitter_janet_simple() -> ts::Language;
     fn tree_sitter_latex() -> ts::Language;
+    fn tree_sitter_tcl() -> ts::Language;
 }
 
 // TODO: begin/end and object/end.
@@ -1153,6 +1154,19 @@ fn build_config(language: guess::Language) -> TreeSitterConfig {
                 ],
                 highlight_query: ts::Query::new(&language, tree_sitter_swift::HIGHLIGHTS_QUERY)
                     .unwrap(),
+                sub_languages: vec![],
+            }
+        }
+        Tcl => {
+            let language = unsafe { tree_sitter_tcl() };
+            let queries = include_str!("../../vendored_parsers/highlights/tcl.scm");
+            let highlight_query = ts::Query::new(&language, queries).unwrap();
+            TreeSitterConfig {
+                language,
+                atom_nodes: ["quoted_word"].into_iter().collect(),
+                delimiter_tokens: vec![("(", ")"), ("[", "]"), ("{", "}")],
+                ignore_trailing_tokens: vec![],
+                highlight_query,
                 sub_languages: vec![],
             }
         }
