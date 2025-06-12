@@ -77,6 +77,7 @@ extern "C" {
     fn tree_sitter_latex() -> ts::Language;
     fn tree_sitter_smali() -> ts::Language;
     fn tree_sitter_scss() -> ts::Language;
+    fn tree_sitter_tcl() -> ts::Language;
     fn tree_sitter_vhdl() -> ts::Language;
 }
 
@@ -1053,6 +1054,18 @@ pub(crate) fn from_language(language: guess::Language) -> TreeSitterConfig {
                 delimiter_tokens: vec![("{", "}"), ("(", ")"), ("[", "]"), ("<", ">")],
                 highlight_query: ts::Query::new(&language, tree_sitter_swift::HIGHLIGHTS_QUERY)
                     .unwrap(),
+                sub_languages: vec![],
+            }
+        }
+        Tcl => {
+            let language = unsafe { tree_sitter_tcl() };
+            let queries = include_str!("../../vendored_parsers/highlights/tcl.scm");
+            let highlight_query = ts::Query::new(&language, queries).unwrap();
+            TreeSitterConfig {
+                language,
+                atom_nodes: [].into_iter().collect(),
+                delimiter_tokens: vec![("(", ")"), ("[", "]"), ("{", "}")],
+                highlight_query,
                 sub_languages: vec![],
             }
         }
