@@ -89,6 +89,7 @@ extern "C" {
     fn tree_sitter_janet_simple() -> ts::Language;
     fn tree_sitter_latex() -> ts::Language;
     fn tree_sitter_tcl() -> ts::Language;
+    fn tree_sitter_typst() -> ts::Language;
 }
 
 // TODO: begin/end and object/end.
@@ -1164,6 +1165,19 @@ fn build_config(language: guess::Language) -> TreeSitterConfig {
             TreeSitterConfig {
                 language,
                 atom_nodes: ["quoted_word"].into_iter().collect(),
+                delimiter_tokens: vec![("(", ")"), ("[", "]"), ("{", "}")],
+                ignore_trailing_tokens: vec![],
+                highlight_query,
+                sub_languages: vec![],
+            }
+        }
+        Typst => {
+            let language = unsafe { tree_sitter_typst() };
+            let queries = include_str!("../../vendored_parsers/highlights/typst.scm");
+            let highlight_query = ts::Query::new(&language, queries).unwrap();
+            TreeSitterConfig {
+                language,
+                atom_nodes: ["string"].into_iter().collect(),
                 delimiter_tokens: vec![("(", ")"), ("[", "]"), ("{", "}")],
                 ignore_trailing_tokens: vec![],
                 highlight_query,
