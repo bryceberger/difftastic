@@ -52,6 +52,11 @@ fn main() {
             src_dir: "vendored_parsers/tree-sitter-latex-src",
             extra_files: vec!["scanner.c"],
         },
+        TreeSitterParser {
+            name: "tree-sitter-typst",
+            src_dir: "vendored_parsers/tree-sitter-typst-src",
+            extra_files: vec!["scanner.c"],
+        },
     ];
 
     // Only rerun if relevant files in the vendored_parsers/ directory change.

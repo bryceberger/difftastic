@@ -74,6 +74,7 @@ pub(crate) enum Language {
     Solidity,
     Sql,
     Swift,
+    Typst,
     Toml,
     TypeScript,
     TypeScriptTsx,
@@ -172,6 +173,7 @@ pub(crate) fn language_name(language: Language) -> &'static str {
         Solidity => "Solidity",
         Sql => "SQL",
         Swift => "Swift",
+        Typst => "Typst",
         Toml => "TOML",
         TypeScript => "TypeScript",
         TypeScriptTsx => "TypeScript TSX",
@@ -377,6 +379,7 @@ pub(crate) fn language_globs(language: Language) -> Vec<glob::Pattern> {
         Solidity => &["*.sol"],
         Sql => &["*.sql", "*.pgsql"],
         Swift => &["*.swift"],
+        Typst => &["*.typ"],
         Toml => &[
             "*.toml",
             "Cargo.lock",
